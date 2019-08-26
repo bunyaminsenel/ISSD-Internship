@@ -2,6 +2,7 @@
 #include "opencv2/highgui.hpp"
 #include <iostream>
 #include <vector>
+
 using namespace cv;
 using namespace std;
 
@@ -16,26 +17,27 @@ double angle(Point p1, Point p2)
 {
     int a=atan2(p1.y - p2.y, p1.x - p2.x);
     return a * 180 / 3.14;
-} 
+}
 
 int main(int argc, char* argv[])
 {
-    Mat gray,threshold_out1,threshold_out2,cannyout,dst, dst1, dst_norm, dst_norm_scaled,gray1;
+    Mat input,gray,dst1,bilateral,median,thres1,thres2,cannyout,dst;
     double otsu;
 
-    Mat input = imread("/home/bunyamin/opencv/aaa.jpg", 1);
+    input = imread("TrainingImages.jpg", 1);
     cvtColor(input, gray, CV_BGR2GRAY);
 
     resize(gray, gray, size);
     resize(input, input, size);
 
-    bilateralFilter ( gray, gray1, 13, 75, 75 );
-    medianBlur(gray1, threshold_out1, 1);
-    
-    otsu = threshold(threshold_out1, threshold_out1, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
-    Canny(threshold_out1, cannyout, otsu, otsu * 1 / 2, 3, 1);
+    bilateralFilter ( gray, bilateral, 13, 75, 75 );
+    medianBlur(bilateral, median, 1);
 
-    cornerHarris(threshold_out1, dst, 7, 5, 0.038, BORDER_DEFAULT);
+    otsu = threshold(median, thres1, 0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
+    Canny(thres1, cannyout, otsu, otsu * 1 / 2, 3, 1);
+
+    cornerHarris(thres1, dst, 7, 5, 0.038, BORDER_DEFAULT);
+
     dilate(dst, dst, getStructuringElement(MORPH_ELLIPSE, Size(3, 3)));
     dst.convertTo(dst1, CV_8UC1);
 
@@ -58,7 +60,7 @@ int main(int argc, char* argv[])
     Mat drawing = Mat::zeros(cannyout.size(), CV_8UC1);
     string sObjectNumber;
     ostringstream sContourNumber;
-    std::vector<Point> centerPoints;
+    vector<Point> centerPoints;
 
     for (int i = 0; i< contours.size(); i++)
     {
@@ -93,7 +95,7 @@ int main(int argc, char* argv[])
     Mat drawing1 = Mat::zeros(dst1.size(), CV_8UC1);
     string sObjectNumber1;
     ostringstream sContourNumber1;
-    std::vector<Point> cornerPoints;
+    vector<Point> cornerPoints;
 
     for (int i = 0; i<contours1.size(); i++)
     {
@@ -110,26 +112,26 @@ int main(int argc, char* argv[])
     }
 
     //cout << calculateDistance(Point(10, 10), Point(20, 20)) << endl;
-    std::vector<int> edgeCounterVec;
+    vector<int> edgeCounterVec;
 
     for (int i = 0; i < centerPoints.size(); i++)
-    {   
-        float s     = calculateDistance(centerPoints.at(0), cornerPoints.at(1));
-        s=s*(1.3);
+    {
+        float Distance= calculateDistance(centerPoints.at(0), cornerPoints.at(1));
+        Distance=Distance*(1.3);
         int edgeCounter = 0;
         stringstream ss;
-        cout<<s<<endl;
+        //cout<<s<<endl;
         for (int j = 0; j < cornerPoints.size(); j++)
         {
             float mDistance = calculateDistance(centerPoints.at(i), cornerPoints.at(j));
 
-            if (mDistance < s)		//e�ik de�eri 100 olsun
+            if (mDistance < Distance)
             {
                 edgeCounter++;
             }
             //cout << i << " " << j << " " <<  mDistance << endl;
-           
-        }   
+
+        }
         edgeCounterVec.push_back(edgeCounter);
 
     if(edgeCounter == 0 || edgeCounter == 1 )
@@ -163,12 +165,11 @@ int main(int argc, char* argv[])
     }
    else{
       //cout<<edgeCounter<<endl;
-    } 
-        sObjectNumber = ss.str();
-        putText(drawing, sObjectNumber, centerPoints.at(i), CV_FONT_HERSHEY_COMPLEX, 1, Scalar(255), 2, 8);
     }
-
-    imshow("debug1", drawing);
+        sObjectNumber = ss.str();
+        putText(input, sObjectNumber, centerPoints.at(i), CV_FONT_HERSHEY_COMPLEX, 1, Scalar(255), 2, 8);
+    }
+    imshow("debug1", input);
     imshow("debug2", drawing1);
     waitKey(0);
     return 0;
