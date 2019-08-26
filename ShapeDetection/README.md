@@ -28,7 +28,7 @@
 
 **Apply Morphological Transformations:** <br/>
 
-![](https://github.com/bunyaminsenel/ISSD-Internship/blob/master/ShapeDetection/Images/6.png <br/>
+![](https://github.com/bunyaminsenel/ISSD-Internship/blob/master/ShapeDetection/Images/6.png) <br/>
 
 **Final Image with Shape Detected:** <br/>
 
