@@ -1,4 +1,4 @@
-# Shape Detection penCV-C++ <br/>
+# Shape Detection OpenCV-C++ <br/>
 ## Detecting shape from images using openCV <b/>
 ![](https://github.com/bunyaminsenel/ISSD-Internship/blob/master/ShapeDetection/Untitled%20Folder/1.png) <b/>
 ![](https://github.com/bunyaminsenel/ISSD-Internship/blob/master/ShapeDetection/Untitled%20Folder/2.png) <b/>
