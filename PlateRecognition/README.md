@@ -10,7 +10,7 @@
 
 **Grayscale Conversion:** <br/>
 
-![](https://github.com/bunyaminsenel/ISSD-Internship/blob/master/PlateRecognition/Images/Gray.png) <br/>
+![](https://github.com/bunyaminsenel/ISSD-Internship/blob/master/PlateRecognition/Images/gray.png) <br/>
 
 **Apply Bilateral Filter:** <br/>
 
