@@ -37,14 +37,14 @@ int main(int argc, char* argv[])
     vector<Vec4i> hierarchy;
     findContours( cannyout, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, Point(0, 0) );
 
-    for( int i = 0; i < contours.size(); i++ ) // iterate through each contour.
+    for( int i = 0; i < contours.size(); i++ )
     {
-        double a = contourArea(contours[i], false);  //  Find the area of contour
+        double a = contourArea(contours[i], false); 
         if (a > largest_area)
         {
             largest_area = a;
-            largest_contour_index = i;                //Store the index of largest contour
-            bounding_rect = boundingRect(contours[i]); // Find the bounding rectangle for biggest contour
+            largest_contour_index = i;           
+            bounding_rect = boundingRect(contours[i]); 
         }
             //drawContours( img, contours, largest_contour_index, Scalar(255,0,0),3);
     }
